@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Policy;
 
 namespace Lieb_Denisa_Maria_Lab2.Models
 {
@@ -15,5 +16,7 @@ namespace Lieb_Denisa_Maria_Lab2.Models
 
         [DataType(DataType.Date)]
         public DateTime PublishingDate { get; set; }
+        public int? PublisherID { get; set; }
+        public Publisher? Publisher { get; set; }
     }
 }
