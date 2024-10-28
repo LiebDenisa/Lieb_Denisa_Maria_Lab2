@@ -23,8 +23,16 @@ namespace Lieb_Denisa_Maria_Lab2.Pages.Books
         {
             ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID",
             "PublisherName");
-            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID",
-"AuthorName");
+            ViewData["AuthorID"] = new SelectList(
+    _context.Set<Author>().Select(a => new
+    {
+        ID = a.ID,
+        FullName = a.FirstName + " " + a.LastName
+    }),
+    "ID",
+    "FullName"
+);
+
             return Page();
         }
 
