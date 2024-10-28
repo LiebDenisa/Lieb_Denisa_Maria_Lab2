@@ -4,6 +4,7 @@ using Lieb_Denisa_Maria_Lab2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lieb_Denisa_Maria_Lab2.Migrations
 {
     [DbContext(typeof(Lieb_Denisa_Maria_Lab2Context))]
-    partial class Lieb_Denisa_Maria_Lab2ContextModelSnapshot : ModelSnapshot
+    [Migration("20241028180547_BookCategory")]
+    partial class BookCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,11 +33,7 @@ namespace Lieb_Denisa_Maria_Lab2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("AuthorName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -136,9 +135,8 @@ namespace Lieb_Denisa_Maria_Lab2.Migrations
             modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Book", b =>
                 {
                     b.HasOne("Lieb_Denisa_Maria_Lab2.Models.Author", "Author")
-                        .WithMany("Books")
-                        .HasForeignKey("AuthorID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("AuthorID");
 
                     b.HasOne("Lieb_Denisa_Maria_Lab2.Models.Publisher", "Publisher")
                         .WithMany("Books")
@@ -149,9 +147,33 @@ namespace Lieb_Denisa_Maria_Lab2.Migrations
                     b.Navigation("Publisher");
                 });
 
-            modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Author", b =>
+            modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.BookCategory", b =>
                 {
-                    b.Navigation("Books");
+                    b.HasOne("Lieb_Denisa_Maria_Lab2.Models.Book", "Book")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("BookID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lieb_Denisa_Maria_Lab2.Models.Category", "Category")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Book", b =>
+                {
+                    b.Navigation("BookCategories");
+                });
+
+            modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Category", b =>
+                {
+                    b.Navigation("BookCategories");
                 });
 
             modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Publisher", b =>
