@@ -43,18 +43,16 @@ namespace Lieb_Denisa_Maria_Lab2.Pages.Books
             }
             PopulateAssignedCategoryData(_context, Book);
 
-            var authorList = _context.Author.Select(x => new
-            {
-                x.ID,
-                FullName = x.LastName + " " + x.FirstName
-            });
+            ViewData["AuthorID"] = new SelectList(
+                _context.Author.Select(a => new
+                {
+                    ID = a.ID,
+                    FullName = a.LastName + " " + a.FirstName
+                }), "ID", "FullName");
 
             ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID",
             "PublisherName");
-            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID",
-            "FirstName");
-            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID",
-           "LastName");
+           
             return Page();
         }
 
@@ -77,7 +75,7 @@ namespace Lieb_Denisa_Maria_Lab2.Pages.Books
                 return NotFound();
             }
             if (await TryUpdateModelAsync<Book>(bookToUpdate, "Book",
-                    i => i.Title, i => i.Author,
+                    i => i.Title, i => i.AuthorID,
                          i => i.Price, i => i.PublishingDate, i => i.PublisherID))
             {
                 UpdateBookCategories(_context, selectedCategories, bookToUpdate);
