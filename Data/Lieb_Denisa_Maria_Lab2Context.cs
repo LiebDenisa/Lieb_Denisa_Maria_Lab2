@@ -27,5 +27,6 @@ namespace Lieb_Denisa_Maria_Lab2.Data
 
             base.OnModelCreating(modelBuilder);
         }
+        public DbSet<Lieb_Denisa_Maria_Lab2.Models.Category> Category { get; set; } = default!;
     }
 }

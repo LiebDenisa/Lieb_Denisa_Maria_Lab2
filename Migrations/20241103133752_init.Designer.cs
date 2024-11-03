@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lieb_Denisa_Maria_Lab2.Migrations
 {
     [DbContext(typeof(Lieb_Denisa_Maria_Lab2Context))]
-    [Migration("20241028171711_last-name-first-name")]
-    partial class lastnamefirstname
+    [Migration("20241103133752_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,46 @@ namespace Lieb_Denisa_Maria_Lab2.Migrations
                     b.ToTable("Book");
                 });
 
+            modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.BookCategory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("BookID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BookID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("BookCategory");
+                });
+
+            modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Category", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Category");
+                });
+
             modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Publisher", b =>
                 {
                     b.Property<int>("ID")
@@ -99,8 +139,9 @@ namespace Lieb_Denisa_Maria_Lab2.Migrations
             modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Book", b =>
                 {
                     b.HasOne("Lieb_Denisa_Maria_Lab2.Models.Author", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorID");
+                        .WithMany("Books")
+                        .HasForeignKey("AuthorID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Lieb_Denisa_Maria_Lab2.Models.Publisher", "Publisher")
                         .WithMany("Books")
@@ -109,6 +150,40 @@ namespace Lieb_Denisa_Maria_Lab2.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("Publisher");
+                });
+
+            modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.BookCategory", b =>
+                {
+                    b.HasOne("Lieb_Denisa_Maria_Lab2.Models.Book", "Book")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("BookID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lieb_Denisa_Maria_Lab2.Models.Category", "Category")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Author", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Book", b =>
+                {
+                    b.Navigation("BookCategories");
+                });
+
+            modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Category", b =>
+                {
+                    b.Navigation("BookCategories");
                 });
 
             modelBuilder.Entity("Lieb_Denisa_Maria_Lab2.Models.Publisher", b =>
