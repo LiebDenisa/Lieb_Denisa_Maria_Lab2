@@ -26,6 +26,8 @@ namespace Lieb_Denisa_Maria_Lab2.Pages.Categories
         public CategoryIndexData CategoryData { get; set; }
         public int CategoryID { get; set; }
         public int BookID { get; set; }
+        public List<Book> AllBooks { get; set; } = new List<Book>();
+
 
         public async Task OnGetAsync(int? id, int? bookID)
         {
@@ -34,6 +36,10 @@ namespace Lieb_Denisa_Maria_Lab2.Pages.Categories
             .Include(i => i.BookCategories).ThenInclude(i => i.Book)
             .ThenInclude(c => c.Author)
             .OrderBy(i => i.CategoryName)
+            .ToListAsync();
+
+            AllBooks = await _context.Book
+            .Include(b => b.Author)
             .ToListAsync();
 
             if (id != null)

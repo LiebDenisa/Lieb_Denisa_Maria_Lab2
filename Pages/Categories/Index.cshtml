@@ -22,11 +22,8 @@
     <tbody>
         @foreach (var item in Model.CategoryData.Categories)
         {
-            string selectedRow = "";
-            if (item.ID == Model.CategoryID)
-            {
-                selectedRow = "table-success";
-            }
+            string selectedRow = item.ID == Model.CategoryID ? "table-success" : "";
+
             
         <tr class="@selectedRow">
             <td>
@@ -42,3 +39,28 @@
 }
     </tbody>
 </table>
+@if (Model.CategoryData.Books != null && Model.CategoryData.Books.Any())
+{
+    <h2>Books in Selected Category</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model.CategoryData.Books)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author.FirstName @book.Author.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (Model.CategoryID != 0)
+{
+    <p>No books available for the selected category.</p>
+}
