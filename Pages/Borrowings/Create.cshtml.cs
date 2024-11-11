@@ -38,7 +38,7 @@ namespace Lieb_Denisa_Maria_Lab2.Pages.Borrowings
         [BindProperty]
         public Borrowing Borrowing { get; set; } = default!;
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
+        
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
